@@ -82,5 +82,5 @@ variable "private_subnets_cidr_block" {
   validation {
     condition     = alltrue([for cidr in var.private_subnets_cidr_block : can(cidrnetmask(cidr))])
     error_message = "All private_subnets_cidr_block values must be valid CIDR blocks."
-  }
+}
 }
