@@ -46,7 +46,7 @@ resource "aws_instance" "this" {
 }
 
 ######## Attaching EIP to the instance #############
-resource "aws_eip" "this" {
-  instance = aws_instance.this.id
+resource "aws_eip" "firewall" {
+  instance = aws_instance.firewall.id
   domain   = "vpc"
 }
