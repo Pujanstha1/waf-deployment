@@ -39,4 +39,12 @@ module "ec2" {
   tags                  = var.tags
   root_volume_size      = var.root_volume_size
   delete_on_termination = var.delete_on_termination
+
+
+  # Passing variables for EC2 Image configuration
+  ami_most_recent          = var.ami_most_recent
+  ami_owners               = var.ami_owners
+  ami_name_pattern         = var.ami_name_pattern
+  ami_virtualization_type  = var.ami_virtualization_type
+  ami_architecture         = var.ami_architecture
 }

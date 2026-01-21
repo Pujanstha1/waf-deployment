@@ -96,3 +96,34 @@ variable "delete_on_termination" {
   description = "Delete root EBS volume on EC2 termination"
   type        = bool
 }
+
+
+## Variables for EC2 Image
+
+variable "ami_most_recent" {
+  description = "Use the most recent AMI"
+  type        = bool
+  default     = true
+}
+
+variable "ami_owners" {
+  description = "AMI owners"
+  type        = list(string)
+}
+
+variable "ami_name_pattern" {
+  description = "AMI name filter"
+  type        = string
+}
+
+variable "ami_virtualization_type" {
+  description = "AMI virtualization type"
+  type        = string
+  default     = "hvm"
+}
+
+variable "ami_architecture" {
+  description = "AMI architecture"
+  type        = string
+  default     = "x86_64"
+}
