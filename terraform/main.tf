@@ -29,8 +29,14 @@ module "sg" {
 module "ec2" {
   source = "./modules/ec2"
 
-  key_name  = var.key_name
-  subnet_id = module.vpc.public_subnets[0].id
-  sg_id     = module.sg.security_group_id
-  tags      = var.tags
+  key_name              = var.key_name
+  subnet_id             = module.vpc.public_subnets[0].id
+  sg_id                 = module.sg.security_group_id
+  iam_instance_profile  = var.iam_instance_profile   
+  instance_type         = var.instance_type
+  root_volume_type      = var.root_volume_type 
+  environment           = var.environment            
+  tags                  = var.tags
+  root_volume_size      = var.root_volume_size
+  delete_on_termination = var.delete_on_termination
 }

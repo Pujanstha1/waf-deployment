@@ -71,3 +71,28 @@ variable "key_name" {
   description = "EC2 key pair name"
   type        = string
 }
+
+variable "iam_instance_profile" {
+  description = "IAM instance profile name for EC2"
+  type        = string
+}
+
+variable "instance_type" {
+  description = "EC2 Instance Type"
+  type        = string
+}
+
+variable "root_volume_type" {
+  description = "Root Volume Type for EC2"
+  type        = string   
+}
+
+variable "root_volume_size" {
+  description = "Size of the Root Volume"
+  type        = number
+}
+
+variable "delete_on_termination" {
+  description = "Delete root EBS volume on EC2 termination"
+  type        = bool
+}
