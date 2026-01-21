@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: IAM User for running Infrastructure as Code (Terraform)
+
+Parameters:
+  TerraformUserName:
+    Type: String
+    Default: noob
+    Description: IAM user name for Terraform
+
+Resources:
+  TerraformUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref TerraformUserName
+
+  TerraformPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: TerraformExecPolicy
+      Users:
+        - !Ref TerraformUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - ec2:*
+              - logs:*
+            Resource: "*"
+          
+          - Effect: Allow
+            Action:
+              - iam:GetRole
+              - iam:PassRole
+              - iam:CreateRole
+              - iam:DeleteRole
+              - iam:AttachRolePolicy
+              - iam:DetachRolePolicy
+              - iam:PutRolePolicy
+              - iam:DeleteRolePolicy
+              - iam:CreateInstanceProfile
+              - iam:AddRoleToInstanceProfile
+              - iam:RemoveRoleFromInstanceProfile
+              - iam:DeleteInstanceProfile
+            Resource: "*"
+
+          - Effect: Allow
+            Action:
+              - s3:*
+            Resource: "*"
+
+          - Effect: Allow
+            Action:
+              - sts:GetCallerIdentity
+            Resource: "*"
+          
+  TerraformAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref TerraformUser
+
+Outputs:
+  TerraformUserName:
+    Description: Terraform IAM User
+    Value: !Ref TerraformUser
+  
+  AccessKeyId:
+    Description: Terraform Access Key ID
+    Value: !Ref TerraformAccessKey
+  
+  SecretAccessKey:
+    Description: Terraform Secret Access Key
+    Value: !GetAtt TerraformAccessKey.SecretAccessKey
