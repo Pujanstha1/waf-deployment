@@ -4,7 +4,7 @@ Description: IAM User for running Infrastructure as Code (Terraform)
 Parameters:
   TerraformUserName:
     Type: String
-    Default: noob
+    Default: Adex
     Description: IAM user name for Terraform
 
 Resources:
@@ -59,15 +59,18 @@ Resources:
     Properties:
       UserName: !Ref TerraformUser
 
+  TerraformSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+    Name: terraform/iam/Adex
+      Description: Terraform IAM Credentials
+      SecretString: !Sub |
+        {
+        "AWS_ACCESS_KEY_ID": "${TerraformAccessKey}",
+        "AWS_SECRET_ACCESS_KEY": "${TerraformAccessKey.SecretAccessKey}"
+        }
 Outputs:
   TerraformUserName:
-    Description: Terraform IAM User
     Value: !Ref TerraformUser
-  
-  AccessKeyId:
-    Description: Terraform Access Key ID
-    Value: !Ref TerraformAccessKey
-  
-  SecretAccessKey:
-    Description: Terraform Secret Access Key
-    Value: !GetAtt TerraformAccessKey.SecretAccessKey
+  TerraformSecretName:
+    Value: terraform/iam/Adex
