@@ -89,30 +89,25 @@ variable "enable_eip" {
 
 
 ## The following are for AMI Configuration
-variable "ami_most_recent" {
-  description = "Whether to fetch the most recent AMI"
-  type        = bool
-  default     = true
-}
 
-variable "ami_owners" {
-  description = "List of AMI owner account IDs"
-  type        = list(string)
-}
+# variable "ami_owners" {
+#   description = "List of AMI owner account IDs"
+#   type        = list(string)
+# }
 
-variable "ami_name_pattern" {
-  description = "AMI name filter pattern"
-  type        = string
-}
+# variable "ami_name_pattern" {
+#   description = "AMI name filter pattern"
+#   type        = string
+# }
 
-variable "ami_virtualization_type" {
-  description = "Virtualization type of the AMI"
-  type        = string
-  default     = "hvm"
-}
+# variable "ami_virtualization_type" {
+#   description = "Virtualization type of the AMI"
+#   type        = string
+#   default     = "hvm"
+# }
 
-variable "ami_architecture" {
-  description = "AMI architecture (x86_64 or arm64)"
-  type        = string
-  default     = "x86_64"
-}
+# variable "ami_architecture" {
+#   description = "AMI architecture (x86_64 or arm64)"
+#   type        = string
+#   default     = "x86_64"
+# }

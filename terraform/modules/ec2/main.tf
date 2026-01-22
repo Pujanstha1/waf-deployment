@@ -2,23 +2,18 @@
 # AMI Lookup
 ############################
 
-data "aws_ami" "custom-image" {
-  most_recent = var.ami_most_recent
-  owners      = var.ami_owners
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
 
   filter {
     name   = "name"
-    values = [var.ami_name_pattern]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-noble-24.04-amd64-server-*"]
   }
 
   filter {
     name   = "virtualization-type"
-    values = [var.ami_virtualization_type]
-  }
-
-  filter {
-    name   = "architecture"
-    values = [var.ami_architecture]
+    values = ["hvm"]
   }
 }
 
