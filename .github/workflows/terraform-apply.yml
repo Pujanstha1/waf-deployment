@@ -2,36 +2,69 @@ name: Terraform Apply (Prod firewall)
 
 on:
   workflow_dispatch:
+    inputs:
+      working_directory:
+        description: "Terraform working directory (dev | stage | prod)"
+        required: true
+        type: choice
+        options:
+          - dev
+          - stage
+          - prod
 
 jobs:
   terraform:
     name: Apply Terraform
     runs-on: ubuntu-latest
 
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7
 
+      - name: Generate tfvars
+        working-directory: ./terraform/envs/${{ inputs.project_directory }}
+
+        run: |
+          cat <<EOF > env.auto.tfvars
+          aws_access_key = "${{ secrets.AWS_ACCESS_KEY }}"
+          aws_secret_key = "${{ secrets.AWS_SECRET_KEY }}"
+          aws_region = "us-east-1"
+
+          environment = ${{ inputs.working_directory }}"
+
+          key_name             = "ec2-${{ inputs.working_directory }}-key"
+          iam_instance_profile = "ec2-${{ inputs.working_directory }}-profile"
+          instance_type        = "t3.medium"
+          root_volume_type     = "gp2"
+          root_volume_size     = 20
+          delete_on_termination = true 
+
+          tags = {
+            Project     = "ec2"
+            Environment = "${{ inputs.working_directory }}"
+            ManagedBy   = "terraform"
+            Owner       = "Security-Team"
+          }
+
+          ami_owners = ["099720109477"]
+
+          ami_name_pattern        = "ubuntu/images/hvm-ssd/ubuntu-noble-24.04-amd64-server-*"
+          ami_virtualization_type = "hvm"
+          ami_architecture        = "x86_64"
+          
+          EOF
+
       - name: Terraform Init
-        working-directory: ./terraform
+        working-directory: ./terraform/envs/${{ inputs.working_directory }}
         run: terraform init
 
       - name: Terraform Validate
-        working-directory: ./terraform
+        working-directory: ./terraform/envs/${{ inputs.working_directory }}
         run: terraform validate
 
       - name: Terraform Apply
-        working-directory: ./terraform
-        run: |
-          terraform apply -auto-approve \
-            -var="ssh_allowed_cidr=${{ secrets.SSH_ALLOWED_CIDR }}"
+        working-directory: ./terraform/envs/${{ inputs.working_directory }}
+        run: terraform apply -auto-approve
