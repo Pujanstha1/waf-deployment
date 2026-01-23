@@ -7,13 +7,7 @@ on:
        description: "Terraform working directory"
        required: true
 
-      aws_access_key:
-        description: "AWS Access Key"
-        required: true
 
-      aws_secret_key:
-        description: "AWS Secret Key"
-        required: true
 
       aws_region:
         description: "AWS Region"
@@ -45,8 +39,8 @@ jobs:
       - name: Terraform Apply
         working-directory: ./terraform/envs/${{ inputs.working_directory }}
         env:
-          TF_VAR_aws_access_key: ${{ inputs.aws_access_key }}
-          TF_VAR_aws_secret_key: ${{ inputs.aws_secret_key }}
+          TF_VAR_aws_access_key: ${{ secrets.aws_access_key }}
+          TF_VAR_aws_secret_key: ${{ secrets.aws_secret_key }}
           TF_VAR_aws_region: ${{ inputs.aws_region }}
 
           TF_VAR_environment: ${{ inputs.working_directory }}
