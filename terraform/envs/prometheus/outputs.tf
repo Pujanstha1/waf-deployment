@@ -12,7 +12,7 @@ output "public_subnet_ids" {
 
 
 output "private_subnet_ids" {
-  value = data.terraform_remote_state.sonarqube.outputs.private_subnet_ids[0]
+  value = data.terraform_remote_state.sonarqube.outputs.private_subnet_ids
 }
 
 ############################
