@@ -16,16 +16,6 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
-variable "vpc_id" {
-  type = string 
-}
-
-
-variable "subnet_id" {
-  type = string 
-
-  
-}
 variable "number_of_az" {
   description = "Number of availability zone for vpc"
   type        = number
